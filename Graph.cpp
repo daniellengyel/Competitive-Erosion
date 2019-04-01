@@ -32,14 +32,15 @@ int CylinderGraph::getColor(int x, int y){
     if((y < 0) or (y >= Y)){
         return -1;
     }
-    return graph[y*X + (x % X)];
+    return graph[y*X + ((x % X) + X) % X];
 }
 
 void CylinderGraph::setColor(int x, int y, int color){
     if((y < 0) or (y >= Y)){
         return;
     }
-    graph[y*X + (x % X)] = color;
+
+    graph[y*X + ((x % X) + X) % X] = color;
 }
 
 std::vector<int> randomWalk(int startX, int startY, int startColor, CylinderGraph *graph){
@@ -53,10 +54,10 @@ std::vector<int> randomWalk(int startX, int startY, int startColor, CylinderGrap
     while(graph->getColor(x, y) == startColor){
         std::vector<char> neighbors = {'L', 'R'};
 
-        if(y < graph->Y - 1){
+        if(y < graph->Y - 2){
             neighbors.push_back('U');
         }
-        if(y > 0){
+        if(y > 1){
             neighbors.push_back('D');
         }
 
@@ -94,13 +95,17 @@ int main(){
     for(int i = 0; i < 1000; i++){
 
         if(i % 100 == 0){
+            int count_ones = 0;
 
             for(int row = 0; row < graph.Y; row++){
                 for(int col = 0; col < graph.X; col++){
-                    std::cout << graph.getColor(col, row);
+                    int c = graph.getColor(col, row);
+                    std::cout << c;
+                    if(c == 1){count_ones++;}
                 }
                 std::cout << std::endl;
             }
+            std::cout << count_ones;
             std::cout << std::endl;
         }
 
@@ -114,6 +119,7 @@ int main(){
         x = dist(mt);
         dest = randomWalk(x, top_y, graph.getColor(x, top_y), &graph);
         graph.setColor(dest[0], dest[1], graph.getColor(x,top_y));
+
 
 
     }
