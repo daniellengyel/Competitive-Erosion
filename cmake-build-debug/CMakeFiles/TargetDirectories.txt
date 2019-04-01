@@ -1,0 +1,3 @@
+/Users/daniellengyel/Competitive-Erosion/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/daniellengyel/Competitive-Erosion/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/daniellengyel/Competitive-Erosion/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir
