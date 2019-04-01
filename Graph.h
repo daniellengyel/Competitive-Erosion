@@ -18,6 +18,7 @@ public:
     void initializeGraph();
 
     int getColor(int x, int y);
+    void setColor(int x, int y, int color);
 };
 
 

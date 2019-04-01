@@ -20,13 +20,26 @@ void CylinderGraph::initializeGraph(){
     for(int i = 0; i < X*Y; i++){
         graph.push_back(dist(mt));
     }
+
+    for(int x = 0; x < X; x++){
+        setColor(x, Y - 1, 0); // top make 0
+        setColor(x, 0, 1); // bottom make 1
+    }
+
 }
 
 int CylinderGraph::getColor(int x, int y){
     if((y < 0) or (y >= Y)){
         return -1;
     }
-    return graph[y*(x % X)];
+    return graph[y*X + (x % X)];
+}
+
+void CylinderGraph::setColor(int x, int y, int color){
+    if((y < 0) or (y >= Y)){
+        return;
+    }
+    graph[y*X + (x % X)] = color;
 }
 
 std::vector<int> randomWalk(int startX, int startY, int startColor, CylinderGraph *graph){
@@ -70,14 +83,42 @@ std::vector<int> randomWalk(int startX, int startY, int startColor, CylinderGrap
 int main(){
     CylinderGraph graph(10, 10);
     graph.initializeGraph();
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(0, graph.X);
 
-    std::vector<int> dest = randomWalk(0, 0, graph.getColor(0,0), &graph);
+    int x;
+    std::vector<int> dest;
+    int top_y = graph.Y - 1;
+    int bottom_y = 0;
+    for(int i = 0; i < 1000; i++){
 
-    std::cout << graph.getColor(0,0) << std::endl;
-    if(dest.empty()){
-        std::cout << "shit" << std::endl;
+        if(i % 100 == 0){
+
+            for(int row = 0; row < graph.Y; row++){
+                for(int col = 0; col < graph.X; col++){
+                    std::cout << graph.getColor(col, row);
+                }
+                std::cout << std::endl;
+            }
+            std::cout << std::endl;
+        }
+
+
+        // bottom
+        x = dist(mt);
+        dest = randomWalk(x, bottom_y, graph.getColor(x,bottom_y), &graph);
+        graph.setColor(dest[0], dest[1], graph.getColor(x,bottom_y));
+
+        // top
+        x = dist(mt);
+        dest = randomWalk(x, top_y, graph.getColor(x, top_y), &graph);
+        graph.setColor(dest[0], dest[1], graph.getColor(x,top_y));
+
+
     }
-    std::cout << graph.getColor(dest[0], dest[1]) << std::endl;
+
+
 
     return 0;
 }
