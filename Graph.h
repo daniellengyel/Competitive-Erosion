@@ -19,6 +19,10 @@ public:
 
     int getColor(int x, int y);
     void setColor(int x, int y, int color);
+
+    void MarkovChain(int n);
+
+    std::vector<int> randomWalk(int startX, int startY, int startColor);
 };
 
 
