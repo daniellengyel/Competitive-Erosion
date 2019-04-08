@@ -30,6 +30,8 @@ public:
     vector<int> numRed; // the number of Red for every y.
     vector<int> numBlue; // the number of Blue for every y.
 
+    vector<int> fluctuations; // the y coordinate of x = 0 as a timeseries. The first non Blue coordinate from bottom.
+
     CylinderGraph(int N, int M);
 
     void initializeGraph();
@@ -40,7 +42,7 @@ public:
     void setTopBlueY();
     void setBottomRedY();
 
-    void MarkovChain(int n);
+    void MarkovChain(int n, int interval);
 
     void printGraph();
 

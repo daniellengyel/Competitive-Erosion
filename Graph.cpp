@@ -13,6 +13,9 @@ using namespace std;
 // x is expected to be within 0 and X-1
 // y is expect to be within 0 and Y-1
 
+// assumes X is power of 2
+// assumes Y is power of 2
+
 CylinderGraph::CylinderGraph(int X, int Y){
     CylinderGraph::X = X;
     CylinderGraph::Y = Y;
@@ -33,12 +36,19 @@ void CylinderGraph::initializeGraph(){
     CylinderGraph::topBlueY = Y-1;
     CylinderGraph::bottomRedY = 0;
 
+//    for(int y = 0; y < Y; y++) {
+//        for (int x = 0; x < X; x++) {
+//            int color = dist(mt);
+//            if(color == RED){ setColor(x, y, color); }
+//        }
+//    }
+// start with limit shape
     for(int y = 0; y < Y; y++) {
         for (int x = 0; x < X; x++) {
-            int color = dist(mt);
-            if(color == RED){ setColor(x, y, color); }
+            if(y >= Y/2){ setColor(x, y, RED); }
         }
     }
+
 
     setTopBlueY();
     setBottomRedY();
@@ -124,7 +134,7 @@ std::vector<int> CylinderGraph::randomWalk(int startX, int startY, int startColo
     return {x, y};
 }
 
-void CylinderGraph::MarkovChain(int n) {
+void CylinderGraph::MarkovChain(int n, int interval) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_int_distribution<int> dist(0, X-1);
@@ -162,10 +172,17 @@ void CylinderGraph::MarkovChain(int n) {
 //        cout << endl;
 //
 //
-        if(i % 10000 == 0){
-            printGraph();
+        if(i % interval == 0){
+//            cout << "-----------" << endl;
 
+            int red_interface = bottomRedY;
+
+            while((red_interface < Y-1) and (graph[X*red_interface] == BLUE)) {red_interface++;}
+            fluctuations.push_back(red_interface);
+//            cout << red_interface << endl;
         }
+//        if (i % 10000 == 0)
+
     }
 }
 
@@ -194,9 +211,12 @@ int main(){
 //    }
 
 
-    CylinderGraph graph(512, 512);
+    CylinderGraph graph(128,128);
     graph.initializeGraph();
-    graph.MarkovChain(100000);
+    graph.MarkovChain(100000, 100);
+
+    for(auto x: graph.fluctuations){cout << x << ", ";}
+    cout << endl;
 
     auto end = std::chrono::steady_clock::now();
     auto diff = end - start;
