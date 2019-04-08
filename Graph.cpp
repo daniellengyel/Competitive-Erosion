@@ -3,11 +3,15 @@
 //
 
 #include "Graph.h"
-#include <random>
-#include <vector>
+
 #include <iostream>
 
+#include <chrono>
+
 using namespace std;
+
+// x is expected to be within 0 and X-1
+// y is expect to be within 0 and Y-1
 
 CylinderGraph::CylinderGraph(int X, int Y){
     CylinderGraph::X = X;
@@ -19,9 +23,9 @@ CylinderGraph::CylinderGraph(int X, int Y){
 
 void CylinderGraph::initializeGraph(){
 
-    graph = vector<int>(X * Y, 0);
+    graph = vector<int>(X * Y, BLUE);
     numRed = vector<int>(Y, 0);
-    numBlue = vector<int>(Y, 0);
+    numBlue = vector<int>(Y, X);
 
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -32,17 +36,13 @@ void CylinderGraph::initializeGraph(){
     for(int y = 0; y < Y; y++) {
         for (int x = 0; x < X; x++) {
             int color = dist(mt);
-            if (color == RED) {
-                numRed[y]++;
-            } else {
-                numBlue[y]++;
-            }
-            setColor(x, y, color);
+            if(color == RED){ setColor(x, y, color); }
         }
     }
 
     setTopBlueY();
     setBottomRedY();
+
 }
 
 void CylinderGraph::setTopBlueY(){
@@ -66,22 +66,26 @@ int CylinderGraph::setColor(int x, int y, int color){
     if((y < 0) or (y >= Y)){
         return -1;
     }
+    if(color == BLUE){
+        numBlue[y]++;
+        numRed[y]--;
+    } else {
+        numBlue[y]--;
+        numRed[y]++;
+    }
 
-    graph[y*X + ((x % X) + X) % X] = color;
+    graph[y*X + x] = color;
     return 1;
 }
 
-std::vector<int> CylinderGraph::randomWalk(int startX, int startY, int startColor){
+std::vector<int> CylinderGraph::randomWalk(int startX, int startY, int startColor,
+        std::uniform_real_distribution<double> & dist, std::mt19937 & mt){
     int x = startX;
     int y = startY;
 
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_real_distribution<double> dist(0, 1);
-
     char next_neighbor;
     double rand_neighbor;
-    while((getColor(x, y) != -1) and (getColor(x, y) == startColor)){
+    while(graph[y*X + x] == startColor){
         rand_neighbor = dist(mt);
         if(y == Y - 1) {
             if (rand_neighbor <= 0.3333) {
@@ -113,8 +117,8 @@ std::vector<int> CylinderGraph::randomWalk(int startX, int startY, int startColo
 
         if(next_neighbor == 'U'){y++;}
         if(next_neighbor == 'D'){y--;}
-        if(next_neighbor == 'R'){x++;}
-        if(next_neighbor == 'L'){x--;}
+        if(next_neighbor == 'R'){x = (x + 1) % X;}
+        if(next_neighbor == 'L'){x = (x - 1 + X) % X;}
 
     }
     return {x, y};
@@ -123,7 +127,11 @@ std::vector<int> CylinderGraph::randomWalk(int startX, int startY, int startColo
 void CylinderGraph::MarkovChain(int n) {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist(0, X);
+    std::uniform_int_distribution<int> dist(0, X-1);
+
+    std::random_device rdRW;
+    std::mt19937 mtRW(rd());
+    std::uniform_real_distribution<double> distRW(0, 1);
 
     int x;
     std::vector<int> dest; // TODO make point
@@ -132,28 +140,32 @@ void CylinderGraph::MarkovChain(int n) {
 
         // bottom
         x = dist(mt);
-        dest = randomWalk(x, max(bottomRedY - 1, 0), BLUE);
+        dest = randomWalk(x, max(bottomRedY - 1, 0), BLUE, distRW, mtRW);
         err = setColor(dest[0], dest[1], BLUE);
         if(err == -1){ break; }
 
         // top
         x = dist(mt);
-        dest = randomWalk(x, min(topBlueY + 1, Y - 1), RED);
+        dest = randomWalk(x, min(topBlueY + 1, Y - 1), RED, distRW, mtRW);
         err = setColor(dest[0], dest[1], RED);
         if(err == -1){ break; }
+
 
         // resetting top/bottom pointers.
         setTopBlueY();
         setBottomRedY();
 
-        if(i % 1000 == 0){
-            cout << i;
-            cout << std::endl;
+//        cout << topBlueY;
+//        cout << endl;
+//        for(auto e : numBlue){cout<< e << " " ;}
+//
+//        cout << endl;
+//
+//
+        if(i % 10000 == 0){
             printGraph();
 
         }
-
-
     }
 }
 
@@ -170,9 +182,27 @@ void CylinderGraph::printGraph() {
 }
 
 int main(){
+    auto start = std::chrono::steady_clock::now();
+
+
+//    double a = 0;
+//    for(int i = 0; i < 1000000; i++){
+//        std::random_device rd;
+//        std::mt19937 mt(rd());
+//        std::uniform_int_distribution<int> dist(0, 1000);
+//        a += dist(mt);
+//    }
+
+
     CylinderGraph graph(512, 512);
     graph.initializeGraph();
     graph.MarkovChain(100000);
+
+    auto end = std::chrono::steady_clock::now();
+    auto diff = end - start;
+    typedef std::chrono::duration<float> float_seconds;
+    auto secs = std::chrono::duration_cast<float_seconds>(diff);
+    std::cout<< "Time elapsed: "<<secs.count()<<" s."<<std::endl;
 
     return 0;
 }

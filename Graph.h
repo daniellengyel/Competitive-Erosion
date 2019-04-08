@@ -6,6 +6,7 @@
 #define COMPETITIVE_EROSION_GRAPH_H
 
 #include <vector>
+#include <random>
 
 using namespace std;
 
@@ -43,7 +44,7 @@ public:
 
     void printGraph();
 
-    vector<int> randomWalk(int startX, int startY, int startColor);
+    vector<int> randomWalk(int startX, int startY, int startColor, std::uniform_real_distribution<double> & dist, std::mt19937 & mt);
 };
 
 
