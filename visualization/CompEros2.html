@@ -1,0 +1,267 @@
+<!--
+Boilerplate WebGL code for visualization.
+
+The lattice is stored as a texture, and then sent to the GPU where it is
+rendered per pixel on the fragment shader.
+
+At the moment, the code visualizes a random walk on the torus. It works
+as follows. The main loop is the function tick(), which at each time step
+executes:
+
+1. mc(): execute a step of the markov chain. In this case, steps the particle
+  randomly.
+2. processLattice(): writes the state to the texture variable "lattice." In this
+  case, colors the location of the particle in the lattice.
+3. loadTextures(): loads the texture to the GPU memory.
+4. drawScene(): invocates the GPU pipeline to render.
+
+On the GPU side, the crucial function to is main in "frag_draw_tex". At the
+moment, it just reads the texture and displays it, with some
+blending to see the history of the particle.
+--->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Random Walk</title>
+<script type="text/javascript" src="./webgl-utils.js"></script>
+
+<script id="frag_draw_tex" type="x-shader/x-fragment">#version 300 es
+  precision mediump float;
+
+  uniform sampler2D tex1;
+	out vec4 color;
+
+	void main(void) {
+    // Reads the texture.
+    float pc = texture(tex1,vec2((gl_FragCoord.x)/512.0,(gl_FragCoord.y)/512.0)).x;
+
+    // Output color.
+    color = vec4(mix(vec3(.7,0.0,.1),vec3(.1,0.0,.7),255.0*pc),1.0);
+    return;
+	}
+</script>
+
+<script id="vert_pass" type="x-shader/x-vertex">#version 300 es
+	precision mediump float;
+    layout(location = 0) in vec3 aVertexPosition;
+    void main(void) { gl_Position = vec4(aVertexPosition,1.0);  }
+</script>
+
+<script type="text/javascript">
+  var gl;
+
+  // The square on top of which the texture is rendered.
+	var SVAO, SL;
+
+  // Shader that draws the texture.
+	var sh_draw_tex;
+
+  // Size of the lattice.
+  const N = 1024;
+
+  // The flattened lattice packed into a RGBA texture.
+  // Each lattice site (i,j) has associated to it four 8-bit integers:
+  // lattice[4*(i*N+j)+0],lattice[4*(i*N+j)+1],
+  // lattice[4*(i*N+j)+2], lattice[4*(i*N+j)+3]
+  const lattice = new Uint8Array(4*N*N);
+
+  // GPU texture object
+  var tex1;
+
+  //initialize the lattice randomly
+  function initLattice() {
+    for (var i = 0; i < N; i++) {
+      for (var j = 0; j < N; j++) {
+        if ( u01() > .5 ) {
+          lattice[4*(i*N+j)] = 0;
+        } else {
+          lattice[4*(i*N+j)] = 1;
+        }
+      }
+    }
+  }
+
+  // Location of the random walk particle. Starts at the origin (N/2, N/2)
+  var ip; var jp;
+
+  function rand_step() {
+    // Sample U[0,1]
+    var rv = u01();
+
+    if ( ip == 0 ) {
+      if ( rv < .3333 ) {
+        jp = (jp+N-1) % N;
+      } else if ( rv < .6666 ) {
+        jp = (jp + 1) % N;
+      } else {
+        ip = ip+1;
+      }
+      return;
+    }
+
+    if ( ip == N-1 ) {
+      if ( rv < .3333 ) {
+        jp = (jp+N-1) % N;
+      } else if ( rv < .6666 ) {
+        jp = (jp + 1) % N;
+      } else {
+        ip = ip-1;
+      }
+      return;
+    }
+
+    if ( rv < .25 ) {
+      ip = ip + 1;
+    } else if ( rv < .5 ) {
+      ip = (ip+N-1) % N;
+    } else if ( rv < .75 ) {
+      jp = (jp + 1) % N;
+    } else {
+      jp = (jp+N-1) % N;
+    }
+  }
+
+  function growInterface(color) {
+    if ( color == 0 ) { ip = 0;  }
+    else { ip = N-1; }
+    jp = Math.floor(u01()*N);
+    while ( lattice[4*(ip*N+jp)] == color ) { rand_step(); }
+    lattice[4*(ip*N+jp)] = color;
+  }
+
+  function mcStep() {
+    growInterface(0); growInterface(1);
+  }
+
+  function tick() {
+
+    for (i = 0; i < 10; i++) {
+      mcStep();
+    }
+    loadTextures();
+    drawScene();
+    requestAnimFrame(tick);
+  }
+
+  function drawScene() {
+    gl.useProgram(sh_draw_tex);
+    gl.uniform1i(gl.getUniformLocation(sh_draw_tex, "tex1"), 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    gl.bindVertexArray(SVAO);  gl.drawElements(gl.TRIANGLES, SL, gl.UNSIGNED_SHORT, 0); gl.bindVertexArray(null);
+	}
+
+	function u01() {
+		return Math.random();
+	}
+
+	function make_shader(vertshader, fragshader) {
+		var sp = gl.createProgram();
+        gl.attachShader(sp, getShader(gl, vertshader)); gl.attachShader(sp, getShader(gl, fragshader));
+        gl.linkProgram(sp);
+		if (!gl.getProgramParameter(sp, gl.LINK_STATUS)) { alert("Could not initialise shaders"); }
+		return sp;
+	}
+
+	function loadShaders() {
+    sh_draw_tex = make_shader("vert_pass","frag_draw_tex");
+	}
+
+	function loadTextures() {
+		gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex1);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, N, N, 0, gl.RGBA, gl.UNSIGNED_BYTE, lattice);
+	}
+
+  function webGLStart() {
+        var canvas = document.getElementById("canvas");
+
+		try {
+            gl = canvas.getContext("webgl2", { preserveDrawingBuffer: true });
+			gl.viewportWidth = canvas.width; gl.viewportHeight = canvas.height;
+        } catch (e) { }
+
+        if (!gl) { alert("Could not initialise WebGL, sorry :-("); }
+
+		gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+		loadShaders();
+    tex1 = gl.createTexture();
+		loadTextures();
+
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+		// square
+    vertices = [1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0 ];
+		ebo = [0,1,2,1,2,3];
+
+		SVAO = gl.createVertexArray(); SL = 6;
+		gl.bindVertexArray(SVAO);
+		gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+		gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0); gl.enableVertexAttribArray(0);
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,  new Uint16Array(ebo), gl.STATIC_DRAW);
+
+		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+		document.onmousedown = handleMouseDown;
+		document.onmouseup = handleMouseUp;
+		document.onkeydown = handleKeyDown;
+		document.onmousemove = handleMouseMove;
+		document.onmouseout = handleMouseUp;
+
+    initLattice();
+
+    tick();
+  }
+
+  function getShader(gl, id) {
+        var shaderScript = document.getElementById(id);
+        if (!shaderScript) { return null; }
+
+        var str = "";
+        var k = shaderScript.firstChild;
+        while (k) {
+            if (k.nodeType == 3) {
+                str += k.textContent;
+            }
+            k = k.nextSibling;
+        }
+
+        var shader;
+        if (shaderScript.type == "x-shader/x-fragment") {
+            shader = gl.createShader(gl.FRAGMENT_SHADER);
+        } else if (shaderScript.type == "x-shader/x-vertex") {
+            shader = gl.createShader(gl.VERTEX_SHADER);
+        } else {
+            return null;
+        }
+
+        gl.shaderSource(shader, str);
+        gl.compileShader(shader);
+
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            alert(gl.getShaderInfoLog(shader));
+            return null;
+        }
+        return shader;
+    }
+	// ---- GUI stuff
+	{
+  	var drag = false; var cmx, cmy;
+
+  	function handleMouseDown(event) { }
+  	function handleMouseMove(event) { }
+  	function handleKeyDown(event) { }
+  	function handleMouseUp(event) { }
+	}
+</script>
+</head>
+
+
+<body  style="background-color:black;" onload="webGLStart();">
+<canvas id="canvas" style="border: none;" width="512" height="512" bg-color ="black"></canvas>
+</body>
+</html>

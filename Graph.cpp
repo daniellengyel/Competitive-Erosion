@@ -211,9 +211,9 @@ int main(){
 //    }
 
 
-    CylinderGraph graph(128,128);
+    CylinderGraph graph(512,512);
     graph.initializeGraph();
-    graph.MarkovChain(100000, 100);
+    graph.MarkovChain(1000000, 5000);
 
     for(auto x: graph.fluctuations){cout << x << ", ";}
     cout << endl;
