@@ -7,20 +7,52 @@
 #include <vector>
 #include <iostream>
 
+using namespace std;
+
 CylinderGraph::CylinderGraph(int X, int Y){
     CylinderGraph::X = X;
     CylinderGraph::Y = Y;
+    CylinderGraph::topBlueY = Y-1;
+    CylinderGraph::bottomRedY = 0;
+
 }
 
 void CylinderGraph::initializeGraph(){
+
+    graph = vector<int>(X * Y, 0);
+    numRed = vector<int>(Y, 0);
+    numBlue = vector<int>(Y, 0);
+
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_int_distribution<int> dist(0, 1);
+    CylinderGraph::topBlueY = Y-1;
+    CylinderGraph::bottomRedY = 0;
 
-    for(int i = 0; i < X*Y; i++){
-        graph.push_back(dist(mt));
+    for(int y = 0; y < Y; y++) {
+        for (int x = 0; x < X; x++) {
+            int color = dist(mt);
+            if (color == RED) {
+                numRed[y]++;
+            } else {
+                numBlue[y]++;
+            }
+            setColor(x, y, color);
+        }
     }
 
+    setTopBlueY();
+    setBottomRedY();
+}
+
+void CylinderGraph::setTopBlueY(){
+    if((topBlueY + 1 <= Y - 1) and (numBlue[topBlueY + 1] != 0)) {topBlueY++;} // assumes that topBlueY can only increase by one.
+    while((topBlueY > 0) and (numBlue[topBlueY] == 0)) {topBlueY--;}
+}
+
+void CylinderGraph::setBottomRedY() {
+    if((bottomRedY - 1 >= 0) and (numRed[bottomRedY - 1] != 0)) {bottomRedY--;}// assumes that bottomRedY can only decrease by one.
+    while((bottomRedY < Y - 1) and (numRed[bottomRedY] == 0)) {bottomRedY++;}
 }
 
 int CylinderGraph::getColor(int x, int y){
@@ -30,12 +62,13 @@ int CylinderGraph::getColor(int x, int y){
     return graph[y*X + ((x % X) + X) % X];
 }
 
-void CylinderGraph::setColor(int x, int y, int color){
+int CylinderGraph::setColor(int x, int y, int color){
     if((y < 0) or (y >= Y)){
-        return;
+        return -1;
     }
 
     graph[y*X + ((x % X) + X) % X] = color;
+    return 1;
 }
 
 std::vector<int> CylinderGraph::randomWalk(int startX, int startY, int startColor){
@@ -46,29 +79,39 @@ std::vector<int> CylinderGraph::randomWalk(int startX, int startY, int startColo
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(0, 1);
 
-    while(getColor(x, y) == startColor){
-        std::vector<char> neighbors = {'L', 'R'};
-
-        if(y < Y - 2){
-            neighbors.push_back('U');
-        }
-        if(y > 1){
-            neighbors.push_back('D');
-        }
-
-        double rand_neighbor = dist(mt);
-        char next_neighbor = 'N';
-
-
-        for(int n = 0; n < neighbors.size(); n++){
-            if(rand_neighbor <= 1.0*(1 + n)/neighbors.size()){
-                next_neighbor = neighbors[n];
-                break;
+    char next_neighbor;
+    double rand_neighbor;
+    while((getColor(x, y) != -1) and (getColor(x, y) == startColor)){
+        rand_neighbor = dist(mt);
+        if(y == Y - 1) {
+            if (rand_neighbor <= 0.3333) {
+                next_neighbor = 'L';
+            } else if (rand_neighbor <= 0.6666) {
+                next_neighbor = 'D';
+            } else {
+                next_neighbor = 'R';
+            }
+        } else if(y == 0){
+            if(rand_neighbor <= 0.3333){
+                next_neighbor = 'L';
+            } else if(rand_neighbor <= 0.6666){
+                next_neighbor = 'U';
+            } else {
+                next_neighbor = 'R';
+            }
+        } else {
+            if(rand_neighbor <= 0.25){
+                next_neighbor = 'L';
+            } else if(rand_neighbor <= 0.5){
+                next_neighbor = 'U';
+            } else if(rand_neighbor <= 0.75) {
+                next_neighbor = 'D';
+            } else {
+                next_neighbor = 'R';
             }
         }
 
-        if(next_neighbor == 'N') {return {};}
-        if(next_neighbor == 'U'){ y++;}
+        if(next_neighbor == 'U'){y++;}
         if(next_neighbor == 'D'){y--;}
         if(next_neighbor == 'R'){x++;}
         if(next_neighbor == 'L'){x--;}
@@ -83,40 +126,53 @@ void CylinderGraph::MarkovChain(int n) {
     std::uniform_int_distribution<int> dist(0, X);
 
     int x;
-    std::vector<int> dest;
-    int top_y = Y - 1;
-    int bottom_y = 0;
-
+    std::vector<int> dest; // TODO make point
+    int err;
     for(int i = 0; i < n; i++){
 
         // bottom
         x = dist(mt);
-        dest = randomWalk(x, bottom_y, 0);
-        setColor(dest[0], dest[1], 0);
+        dest = randomWalk(x, max(bottomRedY - 1, 0), BLUE);
+        err = setColor(dest[0], dest[1], BLUE);
+        if(err == -1){ break; }
 
         // top
         x = dist(mt);
-        dest = randomWalk(x, top_y, 1);
-        setColor(dest[0], dest[1], 1);
+        dest = randomWalk(x, min(topBlueY + 1, Y - 1), RED);
+        err = setColor(dest[0], dest[1], RED);
+        if(err == -1){ break; }
+
+        // resetting top/bottom pointers.
+        setTopBlueY();
+        setBottomRedY();
+
+        if(i % 1000 == 0){
+            cout << i;
+            cout << std::endl;
+            printGraph();
+
+        }
+
 
     }
 }
-int main(){
-    CylinderGraph graph(100, 100);
-    graph.initializeGraph();
-    graph.MarkovChain(10000);
 
-    int count_ones = 0;
-    for(int row = 0; row < graph.Y; row++){
-        for(int col = 0; col < graph.X; col++){
-            int c = graph.getColor(col, row);
+void CylinderGraph::printGraph() {
+
+    for(int y = Y-1; y >= 0; y--){
+        for(int x = 0; x < X; x++){
+            int c = getColor(x, y);
             std::cout << c;
-            if(c == 1){count_ones++;}
         }
         std::cout << std::endl;
     }
-    std::cout << count_ones;
     std::cout << std::endl;
+}
+
+int main(){
+    CylinderGraph graph(512, 512);
+    graph.initializeGraph();
+    graph.MarkovChain(100000);
 
     return 0;
 }

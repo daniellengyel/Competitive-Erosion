@@ -7,22 +7,43 @@
 
 #include <vector>
 
+using namespace std;
+
 class CylinderGraph{
 public:
-    std::vector<int> graph;
+
+
+    vector<int> graph;
     int X;
     int Y;
+
+    int RED = 1;
+    int BLUE = 0;
+
+    // top = RED
+    // bottom = BLUE
+
+    int topBlueY; // The highest y coordinate of blue
+    int bottomRedY; // the lowest y coordinate of red
+
+    vector<int> numRed; // the number of Red for every y.
+    vector<int> numBlue; // the number of Blue for every y.
 
     CylinderGraph(int N, int M);
 
     void initializeGraph();
 
     int getColor(int x, int y);
-    void setColor(int x, int y, int color);
+    int setColor(int x, int y, int color);
+
+    void setTopBlueY();
+    void setBottomRedY();
 
     void MarkovChain(int n);
 
-    std::vector<int> randomWalk(int startX, int startY, int startColor);
+    void printGraph();
+
+    vector<int> randomWalk(int startX, int startY, int startColor);
 };
 
 
