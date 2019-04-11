@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/daniellengyel/Competitive-Erosion/Graph.cpp" "/Users/daniellengyel/Competitive-Erosion/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/Graph.cpp.o"
+  "/Users/mnicoletti/cs270/project/Competitive-Erosion/Graph.cpp" "/Users/mnicoletti/cs270/project/Competitive-Erosion/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/Graph.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
