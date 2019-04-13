@@ -103,7 +103,7 @@ std::vector<int> CylinderGraph::randomWalk(
   double rand_neighbor;
   while (graph[y * X + x] == startColor) {
     rand_neighbor = dist(mt);
-    if (y == min(topBlueY + 1, Y - 1)) {
+    if (y == Y-1) {
       if (rand_neighbor <= 0.3333) {
         next_neighbor = 'L';
       } else if (rand_neighbor <= 0.6666) {
@@ -111,7 +111,7 @@ std::vector<int> CylinderGraph::randomWalk(
       } else {
         next_neighbor = 'R';
       }
-    } else if (y == max(0, bottomRedY - 1)) {
+    } else if (y == 0) {
       if (rand_neighbor <= 0.3333) {
         next_neighbor = 'L';
       } else if (rand_neighbor <= 0.6666) {
