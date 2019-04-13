@@ -37,20 +37,19 @@ void CylinderGraph::initializeGraph() {
   CylinderGraph::bottomRedY = 0;
 
 
-  for (int y = 0; y < Y; y++) {
-    for (int x = 0; x < X; x++) {
-      setColor(x, y, (x + y) % 2);
-
-    }
-  }
-
-
-//    // start with limit shape
-//  for(int y = 0; y < Y; y++) {
-//      for (int x = 0; x < X; x++) {
-//          if(y >= Y/2){ setColor(x, y, RED); }
-//      }
+//  for (int y = 0; y < Y; y++) {
+//    for (int x = 0; x < X; x++) {
+//      setColor(x, y, (x + y) % 2);
+//    }
 //  }
+
+
+    // start with limit shape
+  for(int y = 0; y < Y; y++) {
+      for (int x = 0; x < X; x++) {
+          if(y >= Y/2){ setColor(x, y, RED); }
+      }
+  }
 
 
   setTopBlueY();
@@ -104,7 +103,7 @@ std::vector<int> CylinderGraph::randomWalk(
   double rand_neighbor;
   while (graph[y * X + x] == startColor) {
     rand_neighbor = dist(mt);
-    if (y == Y - 1) {
+    if (y == min(topBlueY + 1, Y - 1)) {
       if (rand_neighbor <= 0.3333) {
         next_neighbor = 'L';
       } else if (rand_neighbor <= 0.6666) {
@@ -112,7 +111,7 @@ std::vector<int> CylinderGraph::randomWalk(
       } else {
         next_neighbor = 'R';
       }
-    } else if (y == 0) {
+    } else if (y == max(0, bottomRedY - 1)) {
       if (rand_neighbor <= 0.3333) {
         next_neighbor = 'L';
       } else if (rand_neighbor <= 0.6666) {
@@ -235,9 +234,9 @@ int main() {
   std::cout << "starting...." << std::endl;
   auto start = std::chrono::steady_clock::now();
 
-  CylinderGraph graph(512, 512);
+  CylinderGraph graph(1024, 1024);
   graph.initializeGraph();
-  graph.MarkovChain(1, 80000);
+  graph.MarkovChain(100, 300000);
   ofstream myfile;
   myfile.open ("example.txt");
 
