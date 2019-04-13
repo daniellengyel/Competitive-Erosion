@@ -36,6 +36,7 @@ void CylinderGraph::initializeGraph() {
   CylinderGraph::topBlueY = Y - 1;
   CylinderGraph::bottomRedY = 0;
 
+
   for (int y = 0; y < Y; y++) {
     for (int x = 0; x < X; x++) {
       setColor(x, y, (x + y) % 2);
@@ -43,15 +44,14 @@ void CylinderGraph::initializeGraph() {
     }
   }
 
-  /*
 
-    // start with limit shape
-      for(int y = 0; y < Y; y++) {
-          for (int x = 0; x < X; x++) {
-              if(y >= Y/2){ setColor(x, y, RED); }
-          }
-      }
-      */
+//    // start with limit shape
+//  for(int y = 0; y < Y; y++) {
+//      for (int x = 0; x < X; x++) {
+//          if(y >= Y/2){ setColor(x, y, RED); }
+//      }
+//  }
+
 
   setTopBlueY();
   setBottomRedY();
@@ -59,8 +59,12 @@ void CylinderGraph::initializeGraph() {
 
 }
 
+int CylinderGraph::getColor(int x, int y) {
+    return graph[y * X + ((x % X) + X) % X];
+}
+
 void CylinderGraph::setTopBlueY() {
-  if ((topBlueY + 1 <= Y - 1) and (numBlue[topBlueY + 1] != 0)) {
+  if ((topBlueY < Y - 1) and (numBlue[topBlueY + 1] != 0)) {
     topBlueY++;
   }  // assumes that topBlueY can only increase by one.
   while ((topBlueY > 0) and (numBlue[topBlueY] == 0)) {
@@ -69,7 +73,7 @@ void CylinderGraph::setTopBlueY() {
 }
 
 void CylinderGraph::setBottomRedY() {
-  if ((bottomRedY - 1 >= 0) and (numRed[bottomRedY - 1] != 0)) {
+  if ((bottomRedY > 0) and (numRed[bottomRedY - 1] != 0)) {
     bottomRedY--;
   }  // assumes that bottomRedY can only decrease by one.
   while ((bottomRedY < Y - 1) and (numRed[bottomRedY] == 0)) {
@@ -77,17 +81,8 @@ void CylinderGraph::setBottomRedY() {
   }
 }
 
-int CylinderGraph::getColor(int x, int y) {
-  if ((y < 0) or (y >= Y)) {
-    return -1;
-  }
-  return graph[y * X + ((x % X) + X) % X];
-}
+void CylinderGraph::setColor(int x, int y, int color) {
 
-int CylinderGraph::setColor(int x, int y, int color) {
-  if ((y < 0) or (y >= Y)) {
-    return -1;
-  }
   if (color == BLUE) {
     numBlue[y]++;
     numRed[y]--;
@@ -97,7 +92,6 @@ int CylinderGraph::setColor(int x, int y, int color) {
   }
 
   graph[y * X + x] = color;
-  return 1;
 }
 
 std::vector<int> CylinderGraph::randomWalk(
@@ -165,7 +159,6 @@ void CylinderGraph::MarkovChain(int num_samples, int interval) {
 
   int x;
   std::vector<int> dest;  // TODO make point
-  int err;
 
   for (int sample = 0; sample < num_samples; sample++) {
     std::cout<<"sample "<<sample<<"..."<<std::endl;
@@ -173,18 +166,12 @@ void CylinderGraph::MarkovChain(int num_samples, int interval) {
       // bottom
       x = dist(mt);
       dest = randomWalk(x, max(bottomRedY - 1, 0), BLUE, distRW, mtRW);
-      err = setColor(dest[0], dest[1], BLUE);
-      if (err == -1) {
-        break;
-      }
+      setColor(dest[0], dest[1], BLUE);
 
       // top
       x = dist(mt);
       dest = randomWalk(x, min(topBlueY + 1, Y - 1), RED, distRW, mtRW);
-      err = setColor(dest[0], dest[1], RED);
-      if (err == -1) {
-        break;
-      }
+      setColor(dest[0], dest[1], RED);
 
       setTopBlueY();
       setBottomRedY();
@@ -248,9 +235,9 @@ int main() {
   std::cout << "starting...." << std::endl;
   auto start = std::chrono::steady_clock::now();
 
-  CylinderGraph graph(128, 128);
+  CylinderGraph graph(512, 512);
   graph.initializeGraph();
-  graph.MarkovChain(400, 10000);
+  graph.MarkovChain(1, 80000);
   ofstream myfile;
   myfile.open ("example.txt");
 
@@ -260,12 +247,13 @@ int main() {
   std::cout << std::endl;
 
   for (auto c : graph.correlations) {
-    myfile << c;
-    myfile << ", ";
+    cout << c;
+    cout << ", ";
   }
+
   myfile.close();
   std::cout << std::endl;
-  graph.printGraph();
+  graph.printDensityGraph(2);
 
   auto end = std::chrono::steady_clock::now();
   auto diff = end - start;

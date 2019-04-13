@@ -6,5 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(Competitive_Erosion
+        CMakeLists.txt
         Graph.cpp
         Graph.h)

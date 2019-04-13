@@ -43,7 +43,7 @@ public:
 
     int h(int x);  // height of the interface at x.
     int getColor(int x, int y);
-    int setColor(int x, int y, int color);
+    void setColor(int x, int y, int color);
 
     void setTopBlueY();
     void setBottomRedY();

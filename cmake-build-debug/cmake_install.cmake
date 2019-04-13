@@ -1,4 +1,4 @@
-# Install script for directory: /Users/mnicoletti/cs270/project/Competitive-Erosion
+# Install script for directory: /Users/daniellengyel/Competitive-Erosion
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/mnicoletti/cs270/project/Competitive-Erosion/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/daniellengyel/Competitive-Erosion/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
