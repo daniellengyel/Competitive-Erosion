@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/daniellengyel/Competitive-Erosion/Graph.cpp
+Graph.h
+/Users/daniellengyel/Competitive-Erosion/Graph.h
+chrono
+-
+iostream
+-
+fstream
+-
+
+/Users/daniellengyel/Competitive-Erosion/Graph.h
+random
+-
+vector
+-
+

@@ -68,7 +68,7 @@ class ArbitraryGraph {
 public:
     int N;
     vector<int> graph; // (x,y) ->  y*N + x
-    int NO_COLOR = -1;
+    int NO_COLOR = 9;
 
     int num_colors; // number of colors
     vector<vector<vector<int>>> starting_regions;
@@ -76,7 +76,7 @@ public:
     // boundries are [0, 1]^2
     function<int(double, double)> domain_function; // (x, y) -> bool
 
-    ArbitraryGraph(int N, int num_colors, vector<vector<vector<int>>> starting_regions, function<int(double, double)> domain_function);
+    ArbitraryGraph(int N, int num_colors, vector<vector<vector<double>>> domain_starting_regions, function<int(double, double)> domain_function);
 
     void initializeGraph();
 

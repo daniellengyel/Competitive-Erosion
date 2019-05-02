@@ -264,12 +264,27 @@ int oldmain() {
 }
 
 
-ArbitraryGraph::ArbitraryGraph(int N, int num_colors, vector<vector<vector<int>>> starting_regions,
+ArbitraryGraph::ArbitraryGraph(int N, int num_colors, vector<vector<vector<double>>> domain_starting_regions,
                                function<int(double, double)> domain_function) {
     ArbitraryGraph::N = N;
     ArbitraryGraph::num_colors = num_colors;
-    ArbitraryGraph::starting_regions = starting_regions;
     ArbitraryGraph::domain_function = domain_function;
+    vector<vector<vector<int>>> starting_regions;
+    for(int color = 0; color < num_colors; color++){
+        vector<vector<int>> color_region;
+        for(int region = 0; region < domain_starting_regions[color].size(); region++){
+            vector<int> p;
+            p.push_back(int(domain_starting_regions[color][region][0]*(N-1)));
+            p.push_back(int(domain_starting_regions[color][region][1]*(N-1)));
+            cout << p[0];
+            cout << p[1];
+            cout << '\n';
+            color_region.push_back(p);
+        }
+
+        starting_regions.push_back(color_region);
+    }
+    ArbitraryGraph::starting_regions = starting_regions;
 }
 
 void ArbitraryGraph::initializeGraph() {
@@ -281,8 +296,9 @@ void ArbitraryGraph::initializeGraph() {
 
   for (int y = 0; y < N; y++) {
     for (int x = 0; x < N; x++) {
-        if(domain_function(1.0*x/N, 1.0*y/N)){
-            setColor(x, y, dist(mt));
+        if(domain_function(x*1.0/(N -1), y*1.0/(N - 1))){
+            int c = dist(mt);
+            setColor(x, y, c);
         }
     }
   }
@@ -391,28 +407,39 @@ void ArbitraryGraph::MarkovChain(int num_samples) {
 
 
 void ArbitraryGraph::printGraph() {
-    for (int y = N - 1 ; y >= 0; y--) {
+    for (int y = N - 1; y >= 0; y--) {
         for (int x = 0; x < N; x++) {
             int c = getColor(x, y);
-            std::cout << c;
+            if(c == 9){
+                std::cout << ' ';
+            } else{
+                std::cout << c;
+            }
         }
         std::cout << std::endl;
     }
     std::cout << std::endl;
 }
 
-int always_true(int x, int y){
+int always_true(double x, double y){
     return 1;
+}
+
+int circle(double x, double y){
+    return (x - 0.5)*(x - 0.5) + (y - 0.5)*(y - 0.5) < 0.25;
 }
 
 int main() {
     std::cout << "starting...." << std::endl;
     auto start = std::chrono::steady_clock::now();
 
-    vector<vector<vector<int>>> startin_pos  = {{{0,0}}, {{9, 9}}}; // is starting pos on domain or lattice? Should be domain.  Fix it!
-    ArbitraryGraph graph(100, 2, startin_pos, always_true);
+    vector<vector<vector<double>>> starting_pos  = {{{ 0.5 - 0.86 * 0.5, 0.05 + 0.25}}, {{0.5, 0.95}}, {{0.5 + 0.86 * 0.5, 0.25}}}; // is starting pos on domain or lattice? Should be domain.  Fix it!
+
+    ArbitraryGraph graph(100, 3, starting_pos, circle);
     graph.initializeGraph();
     graph.printGraph();
+
+
     graph.MarkovChain(1000000);
 //    ofstream myfile;
 //    myfile.open ("example.txt");
