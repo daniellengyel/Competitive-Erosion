@@ -282,7 +282,7 @@ int oldmain(int N, int interval, int num_samples, string filename) {
 //        cout << x << ", ";
 //    }
 //    std::cout << std::endl;
-//
+//t
 //    for (auto a : graph.h_hat_1) {
 //        myfile << a << ", ";
 //    }
@@ -500,9 +500,10 @@ int main(int argc, char *argv[]) {
 //
 //    graph.MarkovChain(1000000);
 
-    string file_name = argv[0];
-
-//    oldmain(128, 10000, 10); // int N, int interval, int num_samples
+    string file_name = argv[1];
+//    cout << file_name;
+//    cout << endl;
+//    oldmain(128, 10, 10, file_name); // int N, int interval, int num_samples
 //    oldmain(128, 10000, 500); // int N, int interval, int num_samples
 
     oldmain(256, 30000, 500, file_name); // int N, int interval, int num_samples

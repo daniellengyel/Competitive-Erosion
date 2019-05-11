@@ -33,12 +33,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Graph.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
-              <caret line="284" column="2" lean-forward="true" selection-start-line="284" selection-start-column="2" selection-end-line="284" selection-end-column="2" />
+            <state relative-caret-position="292">
+              <caret line="504" column="19" lean-forward="true" selection-start-line="504" selection-start-column="19" selection-end-line="504" selection-end-column="19" />
               <folding>
                 <element signature="e#51#69#0" expanded="true" />
                 <element signature="e#286#448#0" />
-                <marker date="1557609715237" expanded="true" signature="1002:1184" ph="..." />
+                <marker date="1557611661451" expanded="true" signature="1002:1184" ph="..." />
               </folding>
             </state>
           </provider>
@@ -144,7 +144,7 @@
     </option>
   </component>
   <component name="RunManager" selected="CMake Application.Build All">
-    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Competitive_Erosion" TARGET_NAME="Competitive_Erosion" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Competitive_Erosion" RUN_TARGET_NAME="Competitive_Erosion">
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="&quot;../sim5.txt&quot;" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Competitive_Erosion" TARGET_NAME="Competitive_Erosion" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Competitive_Erosion" RUN_TARGET_NAME="Competitive_Erosion">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -182,12 +182,12 @@
       <workItem from="1556598618625" duration="8104000" />
       <workItem from="1557113568713" duration="5849000" />
       <workItem from="1557297092982" duration="1127000" />
-      <workItem from="1557600140219" duration="3823000" />
+      <workItem from="1557600140219" duration="4173000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54115000" />
+    <option name="totallyTimeSpent" value="54465000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -202,12 +202,12 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20100144" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20100144" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.036144577" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28674698" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3060241" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -291,12 +291,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Graph.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="284" column="2" lean-forward="true" selection-start-line="284" selection-start-column="2" selection-end-line="284" selection-end-column="2" />
+        <state relative-caret-position="292">
+          <caret line="504" column="19" lean-forward="true" selection-start-line="504" selection-start-column="19" selection-end-line="504" selection-end-column="19" />
           <folding>
             <element signature="e#51#69#0" expanded="true" />
             <element signature="e#286#448#0" />
-            <marker date="1557609715237" expanded="true" signature="1002:1184" ph="..." />
+            <marker date="1557611661451" expanded="true" signature="1002:1184" ph="..." />
           </folding>
         </state>
       </provider>
