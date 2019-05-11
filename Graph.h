@@ -37,6 +37,10 @@ public:
     // E[h[0]])*(h[i] - E[h[i]])], where h[i] is the
     // height of the interface at x = i.
 
+    vector<int> h_interface; // The lowest red pixel y coordinate for every given x.
+    vector<double> h_hat;
+    const double PI = 3.14159;
+
     CylinderGraph(int N, int M);
 
     void initializeGraph();
@@ -56,6 +60,10 @@ public:
     // where each matrix element corresponds to a scale*scale sized block of the original cylinder, and is
     // equal to either "1", "." or "0" depending on the proportion of 1 and 0 in the block.
     void printDensityGraph(int scale);
+
+    void getFourierCoefficients(); // finds and sets the fourier coefficients
+
+    double cosineFourierCoefficient(double k);
 
     vector<int> randomWalk(int startX, int startY, int startColor,
                            std::uniform_real_distribution<double>& dist,

@@ -28,13 +28,16 @@ void CylinderGraph::initializeGraph() {
   graph = vector<int>(X * Y, BLUE);
   numRed = vector<int>(Y, 0);
   numBlue = vector<int>(Y, X);
-   correlations = vector<double>(X,0);
+  correlations = vector<double>(X,0);
+  h_interface = vector<int>(X, 0);
+  h_hat = vector<double>(X, 0);
 
   std::random_device rd;
   std::mt19937 mt(rd());
   std::uniform_int_distribution<int> dist(0, 1);
   CylinderGraph::topBlueY = Y - 1;
   CylinderGraph::bottomRedY = 0;
+
 
 
 //  for (int y = 0; y < Y; y++) {
@@ -47,7 +50,9 @@ void CylinderGraph::initializeGraph() {
     // start with limit shape
   for(int y = 0; y < Y; y++) {
       for (int x = 0; x < X; x++) {
-          if(y >= Y/2){ setColor(x, y, RED); }
+          if(y >= Y/2){
+              setColor(x, y, RED);
+          }
       }
   }
 
@@ -80,14 +85,17 @@ void CylinderGraph::setBottomRedY() {
   }
 }
 
+// always use setColor to also update height interface
 void CylinderGraph::setColor(int x, int y, int color) {
 
   if (color == BLUE) {
     numBlue[y]++;
     numRed[y]--;
+    h_interface[x] = y + 1;
   } else {
     numBlue[y]--;
     numRed[y]++;
+    h_interface[x] = y;
   }
 
   graph[y * X + x] = color;
@@ -147,6 +155,28 @@ std::vector<int> CylinderGraph::randomWalk(
   return {x, y};
 }
 
+void CylinderGraph::getFourierCoefficients(){
+
+    h_hat = vector<double>(2*X, 0);
+
+    for (int k = 0; k < X; k++) {
+        for (int x = 0; x < X; x++) {
+            h_hat[k] += sin(k * x * 2. * PI / X) * h_interface[x];
+            h_hat[X + k] += cos(k * x * 2 * PI / X) * h_interface[x];
+        }
+    }
+}
+
+double CylinderGraph::cosineFourierCoefficient(double k) {
+    double coeff = 0;
+
+    for (int x = 0; x < X; x++) {
+        coeff += h_interface[x]*cos(k * x * 2 * PI / X);
+    }
+
+    return coeff;
+}
+
 void CylinderGraph::MarkovChain(int num_samples, int interval) {
   std::random_device rd;
   std::mt19937 mt(rd());
@@ -159,8 +189,10 @@ void CylinderGraph::MarkovChain(int num_samples, int interval) {
   int x;
   std::vector<int> dest;  // TODO make point
 
+
+
   for (int sample = 0; sample < num_samples; sample++) {
-    std::cout<<"sample "<<sample<<"..."<<std::endl;
+//    std::cout<<"sample "<<sample<<"..."<<std::endl;
     for (int i = 0; i < interval; i++) {
       // bottom
       x = dist(mt);
@@ -175,9 +207,13 @@ void CylinderGraph::MarkovChain(int num_samples, int interval) {
       setTopBlueY();
       setBottomRedY();
     }
-    std::cout<<"done."<<std::endl;
+
 
    // printDensityGraph(32);
+
+//    getFourierCoefficients();
+    cout << cosineFourierCoefficient(double(40))  << " " ;
+    cout << cosineFourierCoefficient(double(50)) << "\n";
 
     fluctuations.push_back(h(0));
 
@@ -234,21 +270,25 @@ int oldmain() {
     std::cout << "starting...." << std::endl;
     auto start = std::chrono::steady_clock::now();
 
-    CylinderGraph graph(1024, 1024);
+    CylinderGraph graph(256, 256);
     graph.initializeGraph();
-    graph.MarkovChain(100, 300000);
+    graph.MarkovChain(300000, 1000);
     ofstream myfile;
     myfile.open ("example.txt");
 
-    for (auto x : graph.fluctuations) {
-        cout << x << ", ";
-    }
-    std::cout << std::endl;
+//    for (auto x : graph.fluctuations) {
+//        cout << x << ", ";
+//    }
+//    std::cout << std::endl;
 
-    for (auto c : graph.correlations) {
-        cout << c;
-        cout << ", ";
-    }
+//    for (auto a : graph.h_hat_1) {
+//        myfile << a << ", ";
+//    }
+
+//    for (auto c : graph.correlations) {
+//        cout << c;
+//        cout << ", ";
+//    }
 
     myfile.close();
     std::cout << std::endl;
@@ -430,17 +470,18 @@ int circle(double x, double y){
 }
 
 int main() {
-    std::cout << "starting...." << std::endl;
-    auto start = std::chrono::steady_clock::now();
-
-    vector<vector<vector<double>>> starting_pos  = {{{ 0.5 - 0.86 * 0.5, 0.05 + 0.25}}, {{0.5, 0.95}}, {{0.5 + 0.86 * 0.5, 0.25}}}; // is starting pos on domain or lattice? Should be domain.  Fix it!
-
-    ArbitraryGraph graph(100, 3, starting_pos, circle);
-    graph.initializeGraph();
-    graph.printGraph();
-
-
-    graph.MarkovChain(1000000);
+//    std::cout << "starting...." << std::endl;
+//    auto start = std::chrono::steady_clock::now();
+//
+//    vector<vector<vector<double>>> starting_pos  = {{{ 0.5 - 0.86 * 0.5, 0.05 + 0.25}}, {{0.5, 0.95}}, {{0.5 + 0.86 * 0.5, 0.25}}}; // is starting pos on domain or lattice? Should be domain.  Fix it!
+//
+//    ArbitraryGraph graph(100, 3, starting_pos, circle);
+//    graph.initializeGraph();
+//    graph.printGraph();
+//
+//
+//    graph.MarkovChain(1000000);
+    oldmain();
 //    ofstream myfile;
 //    myfile.open ("example.txt");
 //
