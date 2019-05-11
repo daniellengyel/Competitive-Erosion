@@ -72,33 +72,33 @@ public:
 
 
 
-class ArbitraryGraph {
-public:
-    int N;
-    vector<int> graph; // (x,y) ->  y*N + x
-    int NO_COLOR = 9;
-
-    int num_colors; // number of colors
-    vector<vector<vector<int>>> starting_regions;
-
-    // boundries are [0, 1]^2
-    function<int(double, double)> domain_function; // (x, y) -> bool
-
-    ArbitraryGraph(int N, int num_colors, vector<vector<vector<double>>> domain_starting_regions, function<int(double, double)> domain_function);
-
-    void initializeGraph();
-
-    int getColor(int x, int y);
-    void setColor(int x, int y, int color);
-
-    void MarkovChain(int num_samples);
-
-    void printGraph();
-
-
-    vector<int> randomWalk(int startX, int startY, int startColor,
-                           std::uniform_real_distribution<double>& dist,
-                           std::mt19937& mt);
-};
+//class ArbitraryGraph {
+//public:
+//    int N;
+//    vector<int> graph; // (x,y) ->  y*N + x
+//    int NO_COLOR = 9;
+//
+//    int num_colors; // number of colors
+//    vector<vector<vector<int>>> starting_regions;
+//
+//    // boundries are [0, 1]^2
+//    function<int(double, double)> domain_function; // (x, y) -> bool
+//
+//    ArbitraryGraph(int N, int num_colors, vector<vector<vector<double>>> domain_starting_regions, function<int(double, double)> domain_function);
+//
+//    void initializeGraph();
+//
+//    int getColor(int x, int y);
+//    void setColor(int x, int y, int color);
+//
+//    void MarkovChain(int num_samples);
+//
+//    void printGraph();
+//
+//
+//    vector<int> randomWalk(int startX, int startY, int startColor,
+//                           std::uniform_real_distribution<double>& dist,
+//                           std::mt19937& mt);
+//};
 
 #endif //COMPETITIVE_EROSION_GRAPH_H
