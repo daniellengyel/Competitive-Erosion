@@ -7,6 +7,7 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 
 using namespace std;
@@ -192,7 +193,7 @@ void CylinderGraph::MarkovChain(int num_samples, int interval) {
 
 
   for (int sample = 0; sample < num_samples; sample++) {
-//    std::cout<<"sample "<<sample<<"..."<<std::endl;
+    std::cout<<"sample "<<sample<<"..."<<std::endl;
     for (int i = 0; i < interval; i++) {
       // bottom
       x = dist(mt);
@@ -212,8 +213,8 @@ void CylinderGraph::MarkovChain(int num_samples, int interval) {
    // printDensityGraph(32);
 
 //    getFourierCoefficients();
-    cout << cosineFourierCoefficient(double(40))  << " " ;
-    cout << cosineFourierCoefficient(double(50)) << "\n";
+//    cout << cosineFourierCoefficient(double(40))  << " " ;
+//    cout << cosineFourierCoefficient(double(50)) << "\n";
 
     fluctuations.push_back(h(0));
 
@@ -266,39 +267,56 @@ void CylinderGraph::printGraph() {
   std::cout << std::endl;
 }
 
-int oldmain() {
-    std::cout << "starting...." << std::endl;
+int oldmain(int N, int interval, int num_samples) {
+    std::cout << "starting simulation with N: " << N << ", num_samples: " << num_samples << ", interval: " << interval <<  "...." << std::endl;
     auto start = std::chrono::steady_clock::now();
 
-    CylinderGraph graph(256, 256);
+    CylinderGraph graph(N, N);
     graph.initializeGraph();
-    graph.MarkovChain(300000, 1000);
+    graph.MarkovChain(num_samples, interval);
+
     ofstream myfile;
-    myfile.open ("example.txt");
+    myfile.open("../simulations.txt", ios_base::app);
 
 //    for (auto x : graph.fluctuations) {
 //        cout << x << ", ";
 //    }
 //    std::cout << std::endl;
-
+//
 //    for (auto a : graph.h_hat_1) {
 //        myfile << a << ", ";
 //    }
-
-//    for (auto c : graph.correlations) {
-//        cout << c;
-//        cout << ", ";
-//    }
-
-    myfile.close();
-    std::cout << std::endl;
-    graph.printDensityGraph(2);
 
     auto end = std::chrono::steady_clock::now();
     auto diff = end - start;
     typedef std::chrono::duration<float> float_seconds;
     auto secs = std::chrono::duration_cast<float_seconds>(diff);
     std::cout << "Time elapsed: " << secs.count() << " s." << std::endl;
+
+    myfile << "Simulation with parameters:" << endl;
+    myfile << "N: " << N << endl;
+    myfile << "Num Steps: " << num_samples << endl;
+    myfile << "Interval: " << interval << endl;
+    myfile << "Fluctuations at x=0: " << endl;
+    for (auto fluct : graph.fluctuations) {
+        myfile << fluct;
+        myfile << ", ";
+    }
+    myfile << endl;
+    myfile << "Correlations for x=0: " << endl;
+    for (auto corr : graph.correlations) {
+        myfile << corr;
+        myfile << ", ";
+    }
+    myfile << endl;
+    myfile << "Took " << secs.count() << " seconds." << endl;
+    myfile << endl;
+
+    myfile.close();
+
+    std::cout << std::endl;
+    graph.printGraph();
+
 
     return 0;
 }
@@ -481,7 +499,15 @@ int main() {
 //
 //
 //    graph.MarkovChain(1000000);
-    oldmain();
+
+
+//    oldmain(128, 10000, 10); // int N, int interval, int num_samples
+//    oldmain(128, 10000, 500); // int N, int interval, int num_samples
+
+    oldmain(256, 30000, 500); // int N, int interval, int num_samples
+    oldmain(256, 30000, 500); // int N, int interval, int num_samples
+
+    oldmain(512, 60000, 500); // int N, int interval, int num_samples
 //    ofstream myfile;
 //    myfile.open ("example.txt");
 //
