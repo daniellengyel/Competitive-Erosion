@@ -267,7 +267,7 @@ void CylinderGraph::printGraph() {
   std::cout << std::endl;
 }
 
-int oldmain(int N, int interval, int num_samples) {
+int oldmain(int N, int interval, int num_samples, string filename) {
     std::cout << "starting simulation with N: " << N << ", num_samples: " << num_samples << ", interval: " << interval <<  "...." << std::endl;
     auto start = std::chrono::steady_clock::now();
 
@@ -276,7 +276,7 @@ int oldmain(int N, int interval, int num_samples) {
     graph.MarkovChain(num_samples, interval);
 
     ofstream myfile;
-    myfile.open("../simulations.txt", ios_base::app);
+    myfile.open(filename, ios_base::app);
 
 //    for (auto x : graph.fluctuations) {
 //        cout << x << ", ";
@@ -487,7 +487,7 @@ int circle(double x, double y){
     return (x - 0.5)*(x - 0.5) + (y - 0.5)*(y - 0.5) < 0.25;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 //    std::cout << "starting...." << std::endl;
 //    auto start = std::chrono::steady_clock::now();
 //
@@ -500,14 +500,15 @@ int main() {
 //
 //    graph.MarkovChain(1000000);
 
+    string file_name = argv[0];
 
 //    oldmain(128, 10000, 10); // int N, int interval, int num_samples
 //    oldmain(128, 10000, 500); // int N, int interval, int num_samples
 
-    oldmain(256, 30000, 500); // int N, int interval, int num_samples
-    oldmain(256, 30000, 500); // int N, int interval, int num_samples
+    oldmain(256, 30000, 500, file_name); // int N, int interval, int num_samples
+    oldmain(256, 30000, 500, file_name); // int N, int interval, int num_samples
 
-    oldmain(512, 60000, 500); // int N, int interval, int num_samples
+    oldmain(512, 60000, 500, file_name); // int N, int interval, int num_samples
 //    ofstream myfile;
 //    myfile.open ("example.txt");
 //

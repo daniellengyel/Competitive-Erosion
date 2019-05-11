@@ -15,19 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b542fd3e-0524-422b-aad3-82a61bdaade0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Graph.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graph.h" beforeDir="false" afterPath="$PROJECT_DIR$/Graph.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/Graph.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/Graph.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Competitive_Erosion.dir/link.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Competitive_Erosion" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Competitive_Erosion" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Competitive_Erosion.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Competitive_Erosion.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,25 +30,25 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Graph.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7110">
-              <caret line="479" column="3" lean-forward="true" selection-start-line="324" selection-start-column="2" selection-end-line="479" selection-end-column="3" />
+            <state relative-caret-position="502">
+              <caret line="284" column="2" lean-forward="true" selection-start-line="284" selection-start-column="2" selection-end-line="284" selection-end-column="2" />
               <folding>
                 <element signature="e#51#69#0" expanded="true" />
                 <element signature="e#286#448#0" />
-                <marker date="1557609336813" expanded="true" signature="1002:1184" ph="..." />
+                <marker date="1557609715237" expanded="true" signature="1002:1184" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Graph.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1515">
-              <caret line="101" column="4" lean-forward="true" selection-start-line="74" selection-start-column="2" selection-end-line="101" selection-end-column="4" />
+            <state relative-caret-position="833">
+              <caret line="92" column="2" lean-forward="true" selection-start-line="92" selection-start-column="2" selection-end-line="92" selection-end-column="2" />
               <folding>
                 <element signature="e#52#69#0" expanded="true" />
               </folding>
@@ -96,8 +84,8 @@
       <list>
         <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/Graph.cpp" />
         <option value="$PROJECT_DIR$/Graph.h" />
+        <option value="$PROJECT_DIR$/Graph.cpp" />
       </list>
     </option>
   </component>
@@ -194,12 +182,12 @@
       <workItem from="1556598618625" duration="8104000" />
       <workItem from="1557113568713" duration="5849000" />
       <workItem from="1557297092982" duration="1127000" />
-      <workItem from="1557600140219" duration="3655000" />
+      <workItem from="1557600140219" duration="3823000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53947000" />
+    <option name="totallyTimeSpent" value="54115000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -291,24 +279,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Graph.cpp">
+    <entry file="file://$PROJECT_DIR$/Graph.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7110">
-          <caret line="479" column="3" lean-forward="true" selection-start-line="324" selection-start-column="2" selection-end-line="479" selection-end-column="3" />
+        <state relative-caret-position="833">
+          <caret line="92" column="2" lean-forward="true" selection-start-line="92" selection-start-column="2" selection-end-line="92" selection-end-column="2" />
           <folding>
-            <element signature="e#51#69#0" expanded="true" />
-            <element signature="e#286#448#0" />
-            <marker date="1557609336813" expanded="true" signature="1002:1184" ph="..." />
+            <element signature="e#52#69#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Graph.h">
+    <entry file="file://$PROJECT_DIR$/Graph.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1515">
-          <caret line="101" column="4" lean-forward="true" selection-start-line="74" selection-start-column="2" selection-end-line="101" selection-end-column="4" />
+        <state relative-caret-position="502">
+          <caret line="284" column="2" lean-forward="true" selection-start-line="284" selection-start-column="2" selection-end-line="284" selection-end-column="2" />
           <folding>
-            <element signature="e#52#69#0" expanded="true" />
+            <element signature="e#51#69#0" expanded="true" />
+            <element signature="e#286#448#0" />
+            <marker date="1557609715237" expanded="true" signature="1002:1184" ph="..." />
           </folding>
         </state>
       </provider>
