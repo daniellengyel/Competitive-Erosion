@@ -506,10 +506,15 @@ int main(int argc, char *argv[]) {
 //    oldmain(128, 10, 10, file_name); // int N, int interval, int num_samples
 //    oldmain(128, 10000, 500); // int N, int interval, int num_samples
 
-    oldmain(256, 30000, 500, file_name); // int N, int interval, int num_samples
-    oldmain(256, 30000, 500, file_name); // int N, int interval, int num_samples
+    oldmain(16, 1000, 3000, file_name); // int N, int interval, int num_samples
+    oldmain(16, 1000, 3000, file_name); // int N, int interval, int num_samples
 
-    oldmain(512, 60000, 500, file_name); // int N, int interval, int num_samples
+    oldmain(8, 1000, 3000, file_name); // int N, int interval, int num_samples
+    oldmain(8, 1000, 3000, file_name); // int N, int interval, int num_samples
+
+    oldmain(32, 4000, 3000, file_name); // int N, int interval, int num_samples
+    oldmain(32, 4000, 3000, file_name); // int N, int interval, int num_samples
+
 //    ofstream myfile;
 //    myfile.open ("example.txt");
 //

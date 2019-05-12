@@ -15,7 +15,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b542fd3e-0524-422b-aad3-82a61bdaade0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled-checkpoint.ipynb" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Graph.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization/CompEros2.html" beforeDir="false" afterPath="$PROJECT_DIR$/visualization/CompEros2.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,12 +35,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Graph.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="504" column="19" lean-forward="true" selection-start-line="504" selection-start-column="19" selection-end-line="504" selection-end-column="19" />
+            <state relative-caret-position="504">
+              <caret line="516" selection-start-line="516" selection-end-line="516" />
               <folding>
                 <element signature="e#51#69#0" expanded="true" />
                 <element signature="e#286#448#0" />
-                <marker date="1557611661451" expanded="true" signature="1002:1184" ph="..." />
+                <marker date="1557612416260" expanded="true" signature="1002:1184" ph="..." />
               </folding>
             </state>
           </provider>
@@ -182,12 +184,12 @@
       <workItem from="1556598618625" duration="8104000" />
       <workItem from="1557113568713" duration="5849000" />
       <workItem from="1557297092982" duration="1127000" />
-      <workItem from="1557600140219" duration="4173000" />
+      <workItem from="1557600140219" duration="5497000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54465000" />
+    <option name="totallyTimeSpent" value="55789000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -200,14 +202,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20100144" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28674698" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2951807" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3060241" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -291,12 +292,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Graph.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="504" column="19" lean-forward="true" selection-start-line="504" selection-start-column="19" selection-end-line="504" selection-end-column="19" />
+        <state relative-caret-position="504">
+          <caret line="516" selection-start-line="516" selection-end-line="516" />
           <folding>
             <element signature="e#51#69#0" expanded="true" />
             <element signature="e#286#448#0" />
-            <marker date="1557611661451" expanded="true" signature="1002:1184" ph="..." />
+            <marker date="1557612416260" expanded="true" signature="1002:1184" ph="..." />
           </folding>
         </state>
       </provider>
